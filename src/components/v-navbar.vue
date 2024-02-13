@@ -14,13 +14,9 @@ import { Component,Vue } from 'vue-property-decorator';
 
 @Component
 export default class NavBar extends Vue {
-  signin =  false;
-  signup = false;
 
-  public signIn (event? : MouseEvent) : void {
-    if(event) {
-      this.signin = true;
-    }
+  signIn() {
+    this.$emit("handlestatesignin",true)
   }
 }
 </script>
