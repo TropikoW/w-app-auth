@@ -1,26 +1,33 @@
     <template>
       <div id="app">
-        <NavBar @handlestatesignin="handleDashClient" v-if="!statebtnsignin"></NavBar>
-        <Dashclient v-if="statebtnsignin"></Dashclient>
+        <DashSign @handleDashSign="toggleDashSigIn" @approvedSignIn="userLogged" v-if="!statebtnsignin"></DashSign>
+        <DashClient @handleDashClient="toggleDashClient" v-if="statebtnsignin"></DashClient>
       </div>
     </template>
 
     <script lang="ts">
     import { Component, Vue } from 'vue-property-decorator';
-    import NavBar from './components/v-navbar.vue';
-    import Dashclient from './components/v-dashclient.vue'
+    import DashSign from './components/v-dashsign.vue';
+    import DashClient from './components/v-dashclient.vue'
 
 
     @Component({
       components: {
-        NavBar,
-        Dashclient
+        DashSign,
+        DashClient
       },
     })
     export default class App extends Vue {
       public statebtnsignin = false;
-      handleDashClient(signIn : boolean) {
+      public statebtnsignup = false;
+      toggleDashSigIn(signIn : boolean) {
         this.statebtnsignin = signIn;
+      }
+      toggleDashClient(signOut : boolean) {
+        this.statebtnsignin = signOut
+      }
+      userLogged(approvedSignIn : boolean) {
+        this.statebtnsignin = approvedSignIn;
       }
     }
     </script>
