@@ -24,10 +24,8 @@
 </template>
 
 <script lang="ts">
-import { Component,Vue,Watch } from 'vue-property-decorator';
+import { Component,Vue,Watch,Prop } from 'vue-property-decorator';
 import ModalSign from './v-modalsign.vue'
-import { onAuthStateChanged } from 'firebase/auth';
-import { auth } from '../utils/firebase'
 
 @Component({
   components : {
@@ -40,9 +38,7 @@ export default class DashSign extends Vue {
   public statusUser = false;
 
   signIn() {
-    this.$emit("handleDashSign",false)
     this.statusModalSign = true;
-    console.log(this.statusModalSign)
   }
 
   deleteModal(cancelSign : boolean) {
@@ -50,21 +46,11 @@ export default class DashSign extends Vue {
     console.log('button x');
   }
 
-  approved(togglestateuser : boolean) {
-    this.statusUser = togglestateuser;
-    this.statusModalSign = false;
-    this.$emit("approvedSignIn",true)
+  approved(useroldlogged : boolean) {
+    this.statusUser = useroldlogged;
   }
 
-  onAuthStateChanged(auth,async(user)=>{
-    if(user) {
-      console.log('user logged')
-    } else {
-      console.log('user not logged')
-    }
-  })
-
-    @Watch('statusModalSign')
+  @Watch('statusModalSign')
   onStatusModalSignChange(newValue: boolean, oldValue: boolean): void {
     console.log(`statusModalSign changed from ${oldValue} to ${newValue}`);
   }
@@ -72,6 +58,13 @@ export default class DashSign extends Vue {
   @Watch('statusUser')
   onStatusUserChange(newValue: boolean, oldValue: boolean): void {
     console.log(`statusUser changed from ${oldValue} to ${newValue}`);
+    this.emitUserState = this.statusUser;
+  }
+  @Prop({default:false,type:Boolean}) emitUserState : boolean;
+
+  constructor() {
+    super();
+    this.emitUserState = false;
   }
 }
 </script>
