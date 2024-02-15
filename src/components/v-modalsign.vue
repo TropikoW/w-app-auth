@@ -22,7 +22,7 @@
 <script lang="ts">
 import {Component, Vue} from 'vue-property-decorator';
 import { onAuthStateChanged } from 'firebase/auth';
-import { auth } from '../utils/firebase';
+import { auth } from '../utils/firebase'
 
 @Component
 export default class ModalSign extends Vue {
