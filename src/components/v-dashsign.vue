@@ -24,8 +24,10 @@
 </template>
 
 <script lang="ts">
-import { Component,Vue } from 'vue-property-decorator';
+import { Component,Vue,Watch } from 'vue-property-decorator';
 import ModalSign from './v-modalsign.vue'
+import { onAuthStateChanged } from 'firebase/auth';
+import { auth } from '../utils/firebase'
 
 @Component({
   components : {
@@ -52,6 +54,24 @@ export default class DashSign extends Vue {
     this.statusUser = togglestateuser;
     this.statusModalSign = false;
     this.$emit("approvedSignIn",true)
+  }
+
+  onAuthStateChanged(auth,async(user)=>{
+    if(user) {
+      console.log('user logged')
+    } else {
+      console.log('user not logged')
+    }
+  })
+
+    @Watch('statusModalSign')
+  onStatusModalSignChange(newValue: boolean, oldValue: boolean): void {
+    console.log(`statusModalSign changed from ${oldValue} to ${newValue}`);
+  }
+
+  @Watch('statusUser')
+  onStatusUserChange(newValue: boolean, oldValue: boolean): void {
+    console.log(`statusUser changed from ${oldValue} to ${newValue}`);
   }
 }
 </script>
