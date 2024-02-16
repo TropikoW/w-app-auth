@@ -1,7 +1,7 @@
     <template>
       <div id="app">
-        <DashSign @handleDashSign="toggleDashSigIn" @approvedSignIn="userLogged" v-if="!statebtnsignin"></DashSign>
-        <DashClient @handleDashClient="toggleDashClient" v-if="statebtnsignin"></DashClient>
+        <DashSign v-if="!stateUser" @userLogged="toggleUserState"></DashSign>
+        <DashClient v-if="stateUser"></DashClient>
       </div>
     </template>
 
@@ -18,16 +18,14 @@
       },
     })
     export default class App extends Vue {
-      public statebtnsignin = false;
-      public statebtnsignup = false;
-      toggleDashSigIn(signIn : boolean) {
-        this.statebtnsignin = signIn;
-      }
-      toggleDashClient(signOut : boolean) {
-        this.statebtnsignin = signOut
-      }
-      userLogged(approvedSignIn : boolean) {
-        this.statebtnsignin = approvedSignIn;
+      public stateUser = false;
+
+      toggleUserState(onAuthStateChanged : boolean) {
+        if(onAuthStateChanged) {
+          this.stateUser = onAuthStateChanged
+        } else {
+          this.stateUser = !onAuthStateChanged
+        }
       }
     }
     </script>
