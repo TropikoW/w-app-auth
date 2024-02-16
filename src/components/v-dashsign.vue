@@ -6,65 +6,62 @@
       <h1 class="text-3xl font-semibold mb-4">Dashboard</h1>
     
         <div class="flex space-x-4">
-          <button class="bg-blue-500 text-white px-4 py-2 rounded" @click="signIn">Sign In</button>
-          <button class="bg-green-500 text-white px-4 py-2 rounded">Sign Up</button>
+          <button class="bg-blue-500 text-white px-4 py-2 rounded" @click="actModalSignIn">Sign In</button>
+          <button class="bg-green-500 text-white px-4 py-2 rounded" @click="actModalSignUp">Sign Up</button>
         </div>
       </div>
     </div>
 
   <div>
-    <ModalSign @cancelBtn="deleteModal" @useroldlogged="approved" v-if="statusModalSign"></ModalSign>
+    <ModalSign v-if="stateBtnSignIn" @emitBtnCancelFromModalSignIn="deleteModalSignIn"></ModalSign>
   </div>
 
   <div>
-    
+    <ModalSignUp v-if="stateBtnSignUp" @emitBtnCancelFromModalSignUp="deleteModalSignUp"></ModalSignUp>
   </div>
 
   </div>
 </template>
 
 <script lang="ts">
-import { Component,Vue,Watch,Prop } from 'vue-property-decorator';
+import { Component,Vue } from 'vue-property-decorator';
+import { onAuthStateChanged } from 'firebase/auth'
+import { auth } from '../utils/firebase'
+
 import ModalSign from './v-modalsign.vue'
+import ModalSignUp from './v-modalsignup.vue'
 
 @Component({
   components : {
-    ModalSign
+    ModalSign,
+    ModalSignUp
   }
 })
 export default class DashSign extends Vue {
+  public stateBtnSignIn = false;
+  public stateBtnSignUp = false;
 
-  public statusModalSign = false;
-  public statusUser = false;
-
-  signIn() {
-    this.statusModalSign = true;
+  actModalSignIn() {
+    this.stateBtnSignIn = true;
   }
-
-  deleteModal(cancelSign : boolean) {
-    this.statusModalSign = cancelSign;
-    console.log('button x');
+  actModalSignUp() {
+    this.stateBtnSignUp = true;
+    console.log(`se activo el actmodalsignup : ${this.stateBtnSignUp}`)
   }
-
-  approved(useroldlogged : boolean) {
-    this.statusUser = useroldlogged;
+  deleteModalSignIn(btnCancel : boolean) {
+    this.stateBtnSignIn = btnCancel
   }
-
-  @Watch('statusModalSign')
-  onStatusModalSignChange(newValue: boolean, oldValue: boolean): void {
-    console.log(`statusModalSign changed from ${oldValue} to ${newValue}`);
+  deleteModalSignUp(btnCancel : boolean) {
+    this.stateBtnSignUp = btnCancel
   }
-
-  @Watch('statusUser')
-  onStatusUserChange(newValue: boolean, oldValue: boolean): void {
-    console.log(`statusUser changed from ${oldValue} to ${newValue}`);
-    this.emitUserState = this.statusUser;
-  }
-  @Prop({default:false,type:Boolean}) emitUserState : boolean;
-
-  constructor() {
-    super();
-    this.emitUserState = false;
+  mounted() {
+    onAuthStateChanged(auth,async(user)=>{
+      if(user) {
+        this.$emit("userLogged",true)
+      } else {
+        //
+      }
+    })
   }
 }
 </script>

@@ -1,15 +1,17 @@
 import { initializeApp } from "firebase/app";
 import { getAuth } from 'firebase/auth'
+import { getFirestore } from 'firebase/firestore'
 
 const firebaseConfig = {
   apiKey: process.env.VUE_APP_API_KEY,
-  authDomain: "auth-firebase-f59d2.firebaseapp.com",
-  projectId: "auth-firebase-f59d2",
-  storageBucket: "auth-firebase-f59d2.appspot.com",
-  messagingSenderId: "179924345179",
-  appId: "1:179924345179:web:34887603088c60936bba7e"
+  authDomain: process.env.VUE_APP_AUTH_KEY,
+  projectId: process.env.VUE_APP_PROJECT_ID,
+  storageBucket: process.env.VUE_STORAGE_BUCKET,
+  messagingSenderId: process.env.VUE_MESSAGINGSENDER_ID,
+  appId: process.env.VUE_APP_ID
 };
 
 // Initialize Firebase
 export const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
+export const db = getFirestore(app);

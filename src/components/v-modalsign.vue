@@ -3,52 +3,42 @@
         <div class="h-full absolute"></div>
         <div class="bg-white p-8 rounded-lg shadow-lg w-1/2">
           <h2 class="text-2xl font-semibold mb-4">Iniciar sesión</h2>
-          <form @submit.prevent="sendData">
+          <form @submit.prevent="validateUser">
             <div class="mb-4">
               <label for="email" class="block text-gray-700 mb-2">Correo electrónico</label>
-              <input type="email" id="email" v-model="user.email" class="w-full border border-gray-300 rounded-md py-2 px-4">
+              <input type="email" id="email" v-model="userInput.email" class="w-full border border-gray-300 rounded-md py-2 px-4">
             </div>
             <div class="mb-4">
               <label for="password" class="block text-gray-700 mb-2">Contraseña</label>
-              <input type="password" id="password" v-model="user.password" class="w-full border border-gray-300 rounded-md py-2 px-4">
+              <input type="password" id="password" v-model="userInput.password" class="w-full border border-gray-300 rounded-md py-2 px-4">
             </div>
             <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded w-full">Iniciar sesión</button>
           </form>
-          <button class="text-gray-600 text-right mt-4" @click="cancelSign">Cerrar</button>
+          <button class="text-gray-600 text-right mt-4" @click="btnCancel">Cerrar</button>
         </div>
       </div>
   </template>
 
 <script lang="ts">
 import {Component, Vue} from 'vue-property-decorator';
-import { onAuthStateChanged } from 'firebase/auth';
-import { auth } from '../utils/firebase'
 import { authentication } from '../app/SignIn'
 
 @Component
 export default class ModalSign extends Vue {
-  user = {
+  public userInput : {
+    email : string,
+    password : string
+  } = {
     email : '',
     password : ''
   }
-  cancelSign = () => {
-    this.$emit("cancelBtn",false);
+
+  btnCancel() {
+    this.$emit("emitBtnCancelFromModalSignIn",false)
   }
-  sendData() {
-    onAuthStateChanged(auth,(user)=> {
-      if (user) {
-        this.$emit("useroldlogged",true)
-    } else {
-      if(this.user.email && this.user.password) {
-        try{
-          authentication(auth,this.user.email,this.user.password)
-          this.$emit("useroldlogged",true)
-        } catch(error) {
-          console.log(error)
-        }
-      }
-    }
-    })
+
+  validateUser() {
+    authentication(this.userInput.email,this.userInput.email)
   }
 }
 
