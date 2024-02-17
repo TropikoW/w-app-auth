@@ -10,8 +10,8 @@ export const addNewUsers = async(userName:string,userLastname : string,userNickn
             email : userEmail,
             password : userPassword
         })
-        console.log(docRef)
-    }catch(error) {
-        console.log(error)
+        return docRef
+    }catch(error : any) {
+        console.log(`error code : ${error.code},error message : ${error.message}`)
     }
 };

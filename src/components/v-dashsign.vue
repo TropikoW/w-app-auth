@@ -62,6 +62,7 @@ export default class DashSign extends Vue {
         //
       }
     })
+    console.warn('Fixed bug Auth')
   }
 }
 </script>

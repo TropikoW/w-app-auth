@@ -4,7 +4,7 @@ import { auth } from '../utils/firebase';
 export const signOutUser = () => {
     try {
         signOut(auth)
-    } catch(error) {
-        console.error(error)
+    } catch(error : any) {
+        console.error(`error code : ${error.code} , error message : ${error.message}`)
     }
 }

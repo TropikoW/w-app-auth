@@ -38,7 +38,7 @@ export default class ModalSign extends Vue {
   }
 
   validateUser() {
-    authentication(this.userInput.email,this.userInput.email)
+    authentication(this.userInput.email,this.userInput.password);
   }
 }
 

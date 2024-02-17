@@ -1,7 +1,8 @@
     <template>
       <div id="app">
         <DashSign v-if="!stateUser" @userLogged="toggleUserState"></DashSign>
-        <DashClient v-if="stateUser"></DashClient>
+        <DashClient v-if="stateUser" @userToggleToFalse="DashSignSendFalse"></DashClient>
+        <p class="absolute bottom-0 right-0 m-4 text-gray-500 text-sm">V-1.0.2 Alpha</p>
       </div>
     </template>
 
@@ -26,6 +27,10 @@
         } else {
           this.stateUser = !onAuthStateChanged
         }
+      }
+
+      DashSignSendFalse(toggleUserState : boolean) {
+        this.stateUser = toggleUserState
       }
     }
     </script>
